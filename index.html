@@ -129,8 +129,7 @@ button:hover{transform:scale(1.05)}
         <div class="timer-unit"><span id="minutes">00</span><label>Menit</label></div>
         <div class="timer-unit"><span id="seconds">00</span><label>Detik</label></div>
       </div>
-      <button onclick="bypassCountdown()" style="font-size:.7rem;padding:6px 14px;opacity:0.5;background:transparent;color:#fff;border:1px solid #fff">Buka Sekarang (Testing) 🛠️</button>
-    </div>
+      </div>
 
     <!-- PIN SCREEN -->
     <div id="pin-screen">
@@ -280,13 +279,7 @@ function checkCountdown(){
   } else {
     cdScreen.style.display = 'none';
     pinScreen.style.display = 'flex';
-  }
-}
 
-function bypassCountdown(){
-  document.getElementById('countdown-screen').style.display = 'none';
-  document.getElementById('pin-screen').style.display = 'flex';
-}
 
 setInterval(checkCountdown, 1000);
 checkCountdown();
