@@ -6,29 +6,429 @@
 <title>For Ghea ♡</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600&display=swap');
-*{box-sizing:border-box} body{margin:0;min-height:100vh;overflow-x:hidden;font-family:Poppins,sans-serif;color:#fff;background:radial-gradient(circle at 50% 15%,#5b416d,#251d35 38%,#0d0b16)}
-.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none}.star{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;opacity:.5;animation:twinkle 3s infinite}.moon{position:absolute;right:-80px;top:-80px;width:230px;height:230px;border-radius:50%;background:#fff;opacity:.08}
-.container{position:relative;z-index:2;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:35px 18px}.card{width:min(92vw,560px);padding:42px 27px;border-radius:32px;background:#ffffff0d;border:1px solid #ffffff1c;backdrop-filter:blur(18px);box-shadow:0 25px 80px #0008;text-align:center}
-.small{letter-spacing:3px;text-transform:uppercase;font-size:.72rem;color:#d9cbe5}h1{font-family:"DM Serif Display",serif;font-size:clamp(3rem,12vw,5rem);font-weight:400;margin:14px 0 8px;background:linear-gradient(90deg,#ffe5f0,#fff,#dfd0ff);color:transparent;background-clip:text}.subtitle{font-size:.95rem;color:#ddd;margin-bottom:28px}
-.envelope{width:115px;height:82px;margin:25px auto 28px;position:relative;border-radius:8px;background:#ffffff18;border:1px solid #ffffff2b;cursor:pointer;transition:.3s}.envelope:hover{transform:translateY(-5px) scale(1.03)}.envelope:before{content:"";position:absolute;left:8px;right:8px;top:7px;height:55px;border-left:2px solid #ffffff55;border-bottom:2px solid #ffffff55;transform:rotate(-45deg) skew(10deg);opacity:.7}
-button{border:0;padding:13px 22px;border-radius:999px;cursor:pointer;font:500 .9rem Poppins;background:#fff;color:#241a31;transition:.2s}button:hover{transform:scale(1.05)}
-#letter{display:none;text-align:left;margin-top:28px;animation:appear .7s ease}#letter.show{display:block}.message{padding:25px;border-radius:22px;background:#ffffff0b;border:1px solid #ffffff16;line-height:1.85;font-size:.94rem;color:#eee}.signature{text-align:center;margin-top:20px;font-size:.8rem;color:#cfc3d7}
-.song{margin-top:24px;padding:14px;border-radius:17px;background:#00000020;border:1px solid #ffffff12;text-align:center}.song b{display:block;font-size:.9rem;margin-bottom:3px}.song span{font-size:.75rem;color:#cfc3d7}.heart{font-size:1.6rem;margin-top:18px;animation:pulse 1.8s infinite}
-@keyframes appear{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}@keyframes pulse{50%{transform:scale(1.15)}}@keyframes twinkle{50%{opacity:.1;transform:scale(.6)}}.confetti{position:fixed;top:-20px;width:7px;height:12px;z-index:10;animation:fall 3.5s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-</style></head>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;overflow-x:hidden;font-family:Poppins,sans-serif;color:#fff;background:radial-gradient(circle at 50% 15%,#5b416d,#251d35 38%,#0d0b16)}
+.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.star{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;opacity:.5;animation:twinkle 3s infinite}
+.moon{position:absolute;right:-80px;top:-80px;width:230px;height:230px;border-radius:50%;background:#fff;opacity:.08}
+
+.container{position:relative;z-index:2;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:35px 18px}
+.card{width:min(92vw,560px);padding:35px 25px;border-radius:32px;background:#ffffff0d;border:1px solid #ffffff1c;backdrop-filter:blur(18px);box-shadow:0 25px 80px #0008;text-align:center}
+
+/* Countdown Lock Screen */
+#countdown-screen{display:none}
+.timer-box{display:flex;justify-content:center;gap:15px;margin:20px 0}
+.timer-unit{background:#ffffff15;padding:12px;border-radius:14px;min-width:65px;border:1px solid #ffffff25}
+.timer-unit span{display:block;font-size:1.6rem;font-weight:600}
+.timer-unit label{font-size:.65rem;color:#ccc;text-transform:uppercase}
+
+/* Pin Screen */
+#pin-screen{display:none;flex-direction:column;align-items:center;justify-content:center}
+.pin-dots{display:flex;gap:15px;margin:20px 0 10px}
+.dot{width:16px;height:16px;border-radius:50%;border:2px solid #ffffffaa;transition:.2s}
+.dot.filled{background:#fff;box-shadow:0 0 12px #fff}
+.hint-text{font-size:.78rem;color:#ffccd5;margin-bottom:15px;background:#ffffff10;padding:6px 14px;border-radius:20px;border:1px dashed #ffccd566}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:260px;margin-top:5px}
+.key{width:65px;height:65px;border-radius:50%;background:#ffffff15;border:1px solid #ffffff2b;color:#fff;font-size:1.3rem;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;user-select:none}
+.key:active{transform:scale(0.9);background:#ffffff35}
+.shake{animation:shake 0.4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+
+/* Main Content */
+#main-content{display:none;animation:appear 0.8s ease forwards}
+.small{letter-spacing:3px;text-transform:uppercase;font-size:.72rem;color:#d9cbe5}
+h1{font-family:"DM Serif Display",serif;font-size:clamp(3rem,12vw,4.5rem);font-weight:400;margin:10px 0 5px;background:linear-gradient(90deg,#ffe5f0,#fff,#dfd0ff);-webkit-background-clip:text;color:transparent}
+.subtitle{font-size:.95rem;color:#ddd;margin-bottom:20px}
+
+/* Cake Section */
+.cake-container{margin:20px auto;position:relative;width:160px;height:120px;cursor:pointer}
+.cake-base{position:absolute;bottom:0;width:160px;height:55px;background:#e2a9be;border-radius:12px;box-shadow:inset 0 -8px #c8849d}
+.cake-middle{position:absolute;bottom:45px;left:15px;width:130px;height:45px;background:#fff5ea;border-radius:10px}
+.cake-top{position:absolute;bottom:80px;left:30px;width:100px;height:35px;background:#e2a9be;border-radius:8px}
+.cake-text{position:absolute;bottom:55px;width:100%;font-size:0.65rem;font-weight:600;color:#5b416d;letter-spacing:1px}
+.candle{position:absolute;top:12px;left:73px;width:14px;height:30px;background:repeating-linear-gradient(45deg,#fff,#fff 5px,#ff829b 5px,#ff829b 10px);border-radius:3px}
+.flame{position:absolute;top:-16px;left:2px;width:10px;height:16px;background:#ffb703;border-radius:50% 50% 20% 20%;box-shadow:0 0 15px #ffb703;animation:flicker 0.6s infinite alternate}
+.flame.off{display:none}
+.smoke{position:absolute;top:-25px;left:4px;width:6px;height:12px;background:#ffffffaa;border-radius:50%;opacity:0}
+.smoke.active{animation:smoke 1.5s ease-out forwards}
+@keyframes flicker{0%{transform:scale(1)}100%{transform:scale(1.15) rotate(2deg)}}
+@keyframes smoke{0%{opacity:0.8;transform:translateY(0)}100%{opacity:0;transform:translateY(-30px) scale(2)}}
+
+/* Gifts Section */
+.gifts-grid{display:flex;justify-content:center;gap:15px;margin:25px 0 15px}
+.gift-card{background:#ffffff12;border:1px solid #ffffff25;padding:15px;border-radius:20px;cursor:pointer;transition:.3s;flex:1;max-width:110px}
+.gift-card:hover{transform:translateY(-5px) scale(1.05);background:#ffffff22}
+.gift-icon{font-size:2.2rem;display:block;margin-bottom:5px}
+.gift-title{font-size:.75rem;color:#eee}
+
+/* Modal Popups for Gifts */
+.modal{display:none;position:fixed;inset:0;background:#00000088;z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.modal-content{background:#2a1f3d;border:1px solid #ffffff30;padding:25px;border-radius:24px;max-width:400px;width:100%;text-align:center;animation:appear .4s ease}
+
+button{border:0;padding:12px 24px;border-radius:999px;cursor:pointer;font:500 .9rem Poppins;background:#fff;color:#241a31;transition:.2s;margin-top:10px}
+button:hover{transform:scale(1.05)}
+
+#letter{display:none;text-align:left;margin-top:25px;animation:appear .7s ease}
+#letter.show{display:block}
+.message{padding:22px;border-radius:20px;background:#ffffff0b;border:1px solid #ffffff16;line-height:1.85;font-size:.92rem;color:#eee}
+.special-wishes{margin-top:15px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#ff829b33,#ffffff10);border:1px solid #ffccd544;font-size:.9rem;line-height:1.7}
+
+/* Music Player UI */
+.song-card{margin-top:20px;padding:16px;border-radius:18px;background:#00000030;border:1px solid #ffffff15;display:flex;align-items:center;gap:15px}
+.vinyl{width:48px;height:48px;border-radius:50%;background:radial-gradient(#111 35%,#333 36%,#111 40%,#333 60%,#111 61%);border:2px solid #555;display:flex;align-items:center;justify-content:center;animation:spin 4s linear infinite;animation-play-state:paused}
+.vinyl.playing{animation-play-state:running}
+.vinyl:after{content:"";width:10px;height:10px;background:#ffccd5;border-radius:50%}
+.song-info{flex:1;text-align:left}
+.song-title{font-size:.88rem;font-weight:600;display:block}
+.song-artist{font-size:.75rem;color:#bcaec9}
+.play-btn{width:36px;height:36px;border-radius:50%;background:#fff;color:#241a31;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;padding:0;margin:0}
+
+/* Reply Box */
+.reply-section{margin-top:25px;background:#ffffff0a;padding:20px;border-radius:20px;border:1px solid #ffffff18;text-align:left}
+.reply-section textarea{width:100%;height:80px;background:#ffffff15;border:1px solid #ffffff25;border-radius:12px;padding:10px;color:#fff;font-family:Poppins;resize:none;margin-top:8px}
+.reply-section textarea:focus{outline:none;border-color:#ffccd5}
+
+#yt-player-container{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+
+@keyframes spin{100%{transform:rotate(360deg)}}
+@keyframes appear{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes twinkle{50%{opacity:.1;transform:scale(.6)}}
+.confetti, .floating-heart{position:fixed;pointer-events:none;z-index:99}
+.confetti{top:-20px;width:7px;height:12px;animation:fall 3.5s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(1.5);opacity:0}}
+</style>
+</head>
 <body>
-<div class="bg" id="stars"></div><div class="moon"></div>
-<div class="container"><div class="card">
-<div class="small">a little birthday message</div><h1>Ghea ♡</h1><div class="subtitle">Something I wanted you to read today.</div>
-<div class="envelope" onclick="openLetter()"></div><button onclick="openLetter()">💌 Open your letter</button>
-<div id="letter"><div class="message">
-<b>Happy sweetest birthday Ghea! 🎂</b><br><br>
-Selamat bertambah usia, ya. May your day be as bright and beautiful as your smile. Semoga cita-cita nya tercapai, sama makasih ya udah datang di hidup aku and thank you for changing my day (padahal baru beberapa hari ya).<br><br>
-Remember that I’ll always be here to support you, no matter what. And i will remember you forever, makasih udah merhatiin dan datang di saat aku sedang butuh seseorang for my day.<br><br>
-So thank youuuu (ILYSM) 🤍
-</div><div class="song"><b>♫ Love. — wave to earth</b><span>Putar lagunya dari aplikasi musik pilihanmu.</span></div><div class="heart">♡</div><div class="signature">made with a little bit of courage & a lot of sincerity</div></div>
-</div></div>
+
+<div class="bg" id="stars"></div>
+<div class="moon"></div>
+
+<!-- YouTube Player Hidden Container -->
+<div id="yt-player-container"><div id="player"></div></div>
+
+<div class="container">
+  <div class="card">
+    
+    <!-- COUNTDOWN LOCK SCREEN -->
+    <div id="countdown-screen">
+      <div class="small">⏳ Countdown to Birthday</div>
+      <h2 style="font-family:'DM Serif Display';font-size:2rem;margin:10px 0 5px;font-weight:400">Sabar Ya, Belum Waktunya! 🤫</h2>
+      <p style="font-size:.82rem;color:#ccc">Website ini baru bisa dibuka pas hari ulang tahun kamu:</p>
+      
+      <div class="timer-box">
+        <div class="timer-unit"><span id="days">00</span><label>Hari</label></div>
+        <div class="timer-unit"><span id="hours">00</span><label>Jam</label></div>
+        <div class="timer-unit"><span id="minutes">00</span><label>Menit</label></div>
+        <div class="timer-unit"><span id="seconds">00</span><label>Detik</label></div>
+      </div>
+    </div>
+
+    <!-- PIN SCREEN -->
+    <div id="pin-screen">
+      <div class="small">🔒 Secret Access</div>
+      <h2 style="font-family:'DM Serif Display';font-size:2rem;margin:10px 0 5px;font-weight:400">Masukkan Password</h2>
+      <div class="hint-text">💡 Hint: Tanggal & bulan ulang tahun kamu (DDMM)</div>
+      
+      <div class="pin-dots" id="dots">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      
+      <div class="keypad">
+        <div class="key" onclick="pressKey('1')">1</div><div class="key" onclick="pressKey('2')">2</div><div class="key" onclick="pressKey('3')">3</div>
+        <div class="key" onclick="pressKey('4')">4</div><div class="key" onclick="pressKey('5')">5</div><div class="key" onclick="pressKey('6')">6</div>
+        <div class="key" onclick="pressKey('7')">7</div><div class="key" onclick="pressKey('8')">8</div><div class="key" onclick="pressKey('9')">9</div>
+        <div class="key" onclick="clearPin()">C</div><div class="key" onclick="pressKey('0')">0</div><div class="key" onclick="backspace()">⌫</div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+      <div class="small">a little birthday message</div>
+      <h1>Ghea ♡</h1>
+      <div class="subtitle">Something special I made for you.</div>
+
+      <!-- CAKE -->
+      <div class="cake-container" onclick="blowCandle()">
+        <div class="candle"><div class="flame" id="flame"></div><div class="smoke" id="smoke"></div></div>
+        <div class="cake-top"></div>
+        <div class="cake-middle"><div class="cake-text">HAPPY BIRTHDAY!</div></div>
+        <div class="cake-base"></div>
+      </div>
+      <p id="cake-hint" style="font-size:.78rem;color:#dcd0e8;margin-top:5px">Pencet lilinya buat tiup! 🎂</p>
+
+      <!-- GIFTS SELECTION -->
+      <p style="font-size:.85rem;margin-top:20px;color:#eeddff">Pilih kado kamu di bawah ini 🎁:</p>
+      <div class="gifts-grid">
+        <div class="gift-card" onclick="openGiftModal('icecream')">
+          <span class="gift-icon">🍦</span>
+          <span class="gift-title">Ice Cream</span>
+        </div>
+        <div class="gift-card" onclick="openGiftModal('flowers')">
+          <span class="gift-icon">💐</span>
+          <span class="gift-title">Bunga</span>
+        </div>
+        <div class="gift-card" onclick="openGiftModal('bear')">
+          <span class="gift-icon">🧸</span>
+          <span class="gift-title">Teddy Bear</span>
+        </div>
+      </div>
+
+      <button id="open-btn" onclick="openLetter()">💌 Buka Surat & Lagu</button>
+
+      <!-- LETTER & MUSIC -->
+      <div id="letter">
+        <div class="message">
+          <b>Happy sweetest birthday Ghea! 🎂</b><br><br>
+          Selamat bertambah usia, ya. May your day be as bright and beautiful as your smile. Semoga cita-cita nya tercapai, sama makasih ya udah datang di hidup aku and thank you for changing my day (padahal baru beberapa hari ya).<br><br>
+          Remember that I’ll always be here to support you, no matter what. And i will remember you forever, makasih udah merhatiin dan datang di saat aku sedang butuh seseorang for my day.<br><br>
+          So thank youuuu (ILYSM) 🤍
+        </div>
+
+        <!-- SPECIAL WISHES -->
+        <div class="special-wishes">
+          <b>✨ Special Wishes:</b><br>
+          "Once again happy birthday ghea, semoga kita terus bareng sama lebih dekat semoga kamu selalu di kelilingi oleh orang-orang yang sayang sama kamuuu dan kamu akan selalu aku inget meski udah pisah atau apapun ituu" 💖
+        </div>
+
+        <!-- SONG CARD CONTROL -->
+        <div class="song-card">
+          <div class="vinyl" id="vinyl"></div>
+          <div class="song-info">
+            <span class="song-title">Love.</span>
+            <span class="song-artist">wave to earth</span>
+          </div>
+          <button class="play-btn" id="play-btn" onclick="toggleAudio()">▶</button>
+        </div>
+
+        <!-- REPLY BOX FOR GHEA -->
+        <div class="reply-section">
+          <b style="font-size:.85rem">💬 Balas Pesan Ini:</b>
+          <textarea id="reply-text" placeholder="Tulis balasan atau perasaan kamu di sini ya..."></textarea>
+          <button onclick="sendReply()" style="width:100%;font-size:.8rem;padding:10px">Kirim Balasan 💌</button>
+        </div>
+
+        <div class="signature" style="margin-top:25px">made with a little bit of courage & a lot of sincerity</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- GIFT MODAL POPUP -->
+<div class="modal" id="gift-modal">
+  <div class="modal-content">
+    <div id="modal-icon" style="font-size:3.5rem;margin-bottom:10px"></div>
+    <h3 id="modal-title" style="margin:5px 0"></h3>
+    <p id="modal-desc" style="font-size:.85rem;color:#ddd;line-height:1.6"></p>
+    <button onclick="closeModal()">Tutup Kado ✖</button>
+  </div>
+</div>
+
+<!-- YouTube API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
-for(let i=0;i<55;i++){let s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';s.style.animationDelay=Math.random()*3+'s';document.getElementById('stars').appendChild(s)}
-function openLetter(){document.getElementById('letter').classList.add('show');for(let i=0;i<65;i++){let c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.animationDelay=Math.random()+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4500)}}
-</script></body></html>
+// Target Date Untuk Countdown Lock (Format: YYYY-MM-DDTHH:MM:SS)
+const targetDate = new Date("2026-09-08T00:00:00").getTime();
+
+function checkCountdown(){
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  if (diff > 0) {
+    // Masih belum waktunya
+    document.getElementById('countdown-screen').style.display = 'block';
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById('days').innerText = String(days).padStart(2, '0');
+    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+  } else {
+    // Sudah waktunya, buka PIN screen
+    document.getElementById('countdown-screen').style.display = 'none';
+    document.getElementById('pin-screen').style.display = 'flex';
+  }
+}
+
+setInterval(checkCountdown, 1000);
+checkCountdown();
+
+// Stars Background
+for(let i=0;i<55;i++){
+  let s=document.createElement('div');
+  s.className='star';
+  s.style.left=Math.random()*100+'vw';
+  s.style.top=Math.random()*100+'vh';
+  s.style.animationDelay=Math.random()*3+'s';
+  document.getElementById('stars').appendChild(s);
+}
+
+// PIN Logic
+let currentPin = "";
+const targetPin = "0809";
+
+function pressKey(num){
+  if(currentPin.length < 4){
+    currentPin += num;
+    updateDots();
+    if(currentPin.length === 4){
+      setTimeout(checkPin, 200);
+    }
+  }
+}
+
+function clearPin(){ currentPin = ""; updateDots(); }
+function backspace(){ currentPin = currentPin.slice(0, -1); updateDots(); }
+
+function updateDots(){
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, index) => {
+    if(index < currentPin.length){
+      dot.classList.add('filled');
+    }else{
+      dot.classList.remove('filled');
+    }
+  });
+}
+
+function checkPin(){
+  if(currentPin === targetPin){
+    document.getElementById('pin-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    triggerConfetti(30);
+  } else {
+    const card = document.querySelector('.card');
+    card.classList.add('shake');
+    setTimeout(() => card.classList.remove('shake'), 400);
+    clearPin();
+  }
+}
+
+// Cake Logic
+let candleBlown = false;
+function blowCandle(){
+  if(!candleBlown){
+    document.getElementById('flame').classList.add('off');
+    document.getElementById('smoke').classList.add('active');
+    document.getElementById('cake-hint').innerText = "Yass, lilinnya udah mati! Make a wish ✨";
+    triggerConfetti(40);
+    candleBlown = true;
+  }
+}
+
+// Gifts Modal Logic
+function openGiftModal(type){
+  const modal = document.getElementById('gift-modal');
+  const icon = document.getElementById('modal-icon');
+  const title = document.getElementById('modal-title');
+  const desc = document.getElementById('modal-desc');
+
+  if(type === 'icecream'){
+    icon.innerText = "🍦";
+    title.innerText = "Sweet Ice Cream!";
+    desc.innerText = "Es krim manis khusus buat nemenin hari ultah kamu biar makin seger dan happy!";
+  } else if(type === 'flowers'){
+    icon.innerText = "💐";
+    title.innerText = "Virtual Flower Bouquet";
+    desc.innerText = "Bunga cantik yang nggak bakal pernah layu, khusus disimpen buat Ghea ✨";
+  } else if(type === 'bear'){
+    icon.innerText = "🧸";
+    title.innerText = "Fluffy Teddy Bear";
+    desc.innerText = "Boneka beruang hangat yang siap nemenin kamu kapan aja kamu butuh pelukan virtual!";
+  }
+  
+  modal.style.display = 'flex';
+  triggerConfetti(30);
+}
+
+function closeModal(){
+  document.getElementById('gift-modal').style.display = 'none';
+}
+
+// YouTube Player
+let player;
+let isPlaying = false;
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    height: '1', width: '1', videoId: 'Q49pnA4jsp8',
+    playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
+    events: { 'onStateChange': onPlayerStateChange }
+  });
+}
+
+function onPlayerStateChange(event) {
+  const playBtn = document.getElementById('play-btn');
+  const vinyl = document.getElementById('vinyl');
+  if (event.data == YT.PlayerState.PLAYING) {
+    isPlaying = true;
+    playBtn.innerText = "❚❚";
+    vinyl.classList.add('playing');
+  } else {
+    isPlaying = false;
+    playBtn.innerText = "▶";
+    vinyl.classList.remove('playing');
+  }
+}
+
+function openLetter(){
+  document.getElementById('letter').classList.add('show');
+  document.getElementById('open-btn').style.display = 'none';
+  triggerConfetti(50);
+  if(player && player.playVideo) { player.playVideo(); }
+}
+
+function toggleAudio(){
+  if(player && player.playVideo) {
+    if(isPlaying) { player.pauseVideo(); } else { player.playVideo(); }
+  }
+}
+
+// Send Reply via WhatsApp / Copy
+function sendReply(){
+  const text = document.getElementById('reply-text').value;
+  if(text.trim() === ""){
+    alert("Tulis balasannya dulu yaa!");
+    return;
+  }
+  // Ganti nomor WA berikut dengan nomor kamu (Format: 628xxx)
+  const phone = "082226472349"; 
+  const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent("Balasan dari Ghea di Website: " + text)}`;
+  window.open(waUrl, '_blank');
+}
+
+// Confetti & Heart FX
+function triggerConfetti(count){
+  for(let i=0;i<count;i++){
+    let c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=['#ff829b','#ffe5f0','#d9cbe5','#fff'][Math.floor(Math.random()*4)];
+    c.style.animationDelay=Math.random()*0.5+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3500);
+  }
+}
+
+document.addEventListener('click', function(e){
+  if(e.target.tagName !== 'BUTTON' && !e.target.classList.contains('key') && !e.target.classList.contains('gift-card')){
+    let heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.innerHTML = '💖';
+    heart.style.left = e.clientX - 10 + 'px';
+    heart.style.top = e.clientY - 10 + 'px';
+    heart.style.animation = 'floatUp 1s ease-out forwards';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1000);
+  }
+});
+</script>
+</body>
+</html>
