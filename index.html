@@ -16,10 +16,10 @@ body{margin:0;min-height:100vh;overflow-x:hidden;font-family:Poppins,sans-serif;
 .card{width:min(92vw,560px);padding:35px 25px;border-radius:32px;background:#ffffff0d;border:1px solid #ffffff1c;backdrop-filter:blur(18px);box-shadow:0 25px 80px #0008;text-align:center}
 
 /* Countdown Lock Screen */
-#countdown-screen{display:none}
-.timer-box{display:flex;justify-content:center;gap:15px;margin:20px 0}
-.timer-unit{background:#ffffff15;padding:12px;border-radius:14px;min-width:65px;border:1px solid #ffffff25}
-.timer-unit span{display:block;font-size:1.6rem;font-weight:600}
+#countdown-screen{display:block}
+.timer-box{display:flex;justify-content:center;gap:10px;margin:20px 0}
+.timer-unit{background:#ffffff15;padding:10px;border-radius:14px;min-width:60px;border:1px solid #ffffff25}
+.timer-unit span{display:block;font-size:1.4rem;font-weight:600}
 .timer-unit label{font-size:.65rem;color:#ccc;text-transform:uppercase}
 
 /* Pin Screen */
@@ -120,7 +120,7 @@ button:hover{transform:scale(1.05)}
     <!-- COUNTDOWN LOCK SCREEN -->
     <div id="countdown-screen">
       <div class="small">⏳ Countdown to Birthday</div>
-      <h2 style="font-family:'DM Serif Display';font-size:2rem;margin:10px 0 5px;font-weight:400">Sabar Ya, Belum Waktunya! 🤫</h2>
+      <h2 style="font-family:'DM Serif Display';font-size:1.8rem;margin:10px 0 5px;font-weight:400">Sabar Ya, Belum Waktunya! 🤫</h2>
       <p style="font-size:.82rem;color:#ccc">Website ini baru bisa dibuka pas hari ulang tahun kamu:</p>
       
       <div class="timer-box">
@@ -129,6 +129,7 @@ button:hover{transform:scale(1.05)}
         <div class="timer-unit"><span id="minutes">00</span><label>Menit</label></div>
         <div class="timer-unit"><span id="seconds">00</span><label>Detik</label></div>
       </div>
+      <button onclick="bypassCountdown()" style="font-size:.7rem;padding:6px 14px;opacity:0.5;background:transparent;color:#fff;border:1px solid #fff">Buka Sekarang (Testing) 🛠️</button>
     </div>
 
     <!-- PIN SCREEN -->
@@ -259,8 +260,13 @@ function checkCountdown(){
   const now = new Date().getTime();
   const diff = targetDate - now;
 
+  const cdScreen = document.getElementById('countdown-screen');
+  const pinScreen = document.getElementById('pin-screen');
+
   if (diff > 0) {
-    document.getElementById('countdown-screen').style.display = 'block';
+    if(pinScreen.style.display !== 'flex') {
+      cdScreen.style.display = 'block';
+    }
     
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -272,9 +278,14 @@ function checkCountdown(){
     document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
     document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
   } else {
-    document.getElementById('countdown-screen').style.display = 'none';
-    document.getElementById('pin-screen').style.display = 'flex';
+    cdScreen.style.display = 'none';
+    pinScreen.style.display = 'flex';
   }
+}
+
+function bypassCountdown(){
+  document.getElementById('countdown-screen').style.display = 'none';
+  document.getElementById('pin-screen').style.display = 'flex';
 }
 
 setInterval(checkCountdown, 1000);
@@ -394,7 +405,7 @@ function onPlayerStateChange(event) {
   } else {
     isPlaying = false;
     playBtn.innerText = "▶";
-    vinyl.classList.remove('playing');
+    vinyl.classList.remove('playing'); 
   }
 }
 
@@ -413,7 +424,7 @@ function toggleAudio(){
 
 // Ask Girlfriend Logic
 function moveNoBtn(){
-  const n = noBtn = document.getElementById('no-btn');
+  const noBtn = document.getElementById('no-btn');
   const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2 - 60);
   const y = Math.random() * 200 - 100;
   noBtn.style.transform = `translate(${x}px, ${y}px)`;
@@ -464,4 +475,4 @@ document.addEventListener('click', function(e){
 });
 </script>
 </body>
-</html>
+</html>    
